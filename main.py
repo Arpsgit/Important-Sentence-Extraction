@@ -9,7 +9,7 @@ nltk.download('punkt')
 nltk.download('stopwords')
 sentence_embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
 stopw = stopwords.words('english')
-punc = ['!','(',')','-','[',']','{','}',';',':','\\','<','>','.','/','?','@','#','$','%','^','&','*','_','~', ',', '\'','\"']
+punc = ['!', '(', ')', '-', '[', ']', '{', '}', ';', ':', '\\', '<', '>', '.', '/', '?', '@', '#', '$', '%', '^', '&', '*', '_', '~', ',', '\'', '\"']
 
 
 def important_sentences(text):
@@ -31,7 +31,7 @@ def important_sentences(text):
     else:
         imp_sen1 = None
 
-    return imp_sen1, sentences1
+    return imp_sen1, sentences1, keyword[:5]
 
 
 st.title('Important Sentence Extraction from Research Paper')
@@ -41,8 +41,12 @@ input_text = st.text_area("Enter your text: ")
 if st.button('Find'):
     if input_text != '':
 
-        imp_sen2, sentences2 = important_sentences(input_text)
+        imp_sen2, sentences2, keywords = important_sentences(input_text)
         if imp_sen2 != None:
+            with st.expander('See key takeaways or important phrases from the text:(Click this drop down)'):
+                for kw in keywords:
+                    st.write(f':pushpin: {kw[1]}')
+            st.subheader('Important Sentences: ')
             for sen in imp_sen2:
                 st.text(sentences2[sen])
                 st.divider()
